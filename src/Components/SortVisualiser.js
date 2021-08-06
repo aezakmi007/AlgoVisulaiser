@@ -4,13 +4,20 @@ import "./sortingVisualiser.css";
 const rnadomIntFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
+function waitforme(milisec) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("");
+    }, milisec);
+  });
+}
 
 const SortVisualiser = () => {
   const [array, setArray] = useState([]);
 
   const resetArray = () => {
     const arr = [];
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 10; i++) {
       arr.push(rnadomIntFromInterval(5, 600));
     }
     setArray(arr);
@@ -19,39 +26,32 @@ const SortVisualiser = () => {
     resetArray();
   }, []);
 
-  const bubbleSort = () => {
+  const bubbleSort = async () => {
     const arr = document.getElementsByClassName("array-bar");
     let i = 0;
-    // const height = [];
-    // for (let k = 0; k < arr.length; k++) {
-    //   height[k] = arr[k].style.height;
-    // }
-    // height.sort((a, b) => a - b);
 
     for (i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr.length - i - 1; j++) {
-        setTimeout(() => {
-          if (
-            parseInt(arr[j].style.height) >= parseInt(arr[j + 1].style.height)
-          ) {
-            let temp1 = arr[j].style.height;
-            let temp2 = arr[j + 1].style.height;
-            // console.log(temp1, temp2);
-            temp1 = temp1.substring(0, temp1.length - 2);
-            temp2 = temp2.substring(0, temp2.length - 2);
-            // console.log(temp1, temp2);
-            arr[j + 1].style.height = `${parseInt(temp1)}px`;
-            arr[j].style.height = `${parseInt(temp2)}px`;
-            // console.log(arr[j + 1].style.height, arr[j].style.height);
-            // arr[j].style.height = arr[j + 1].style.height;
-            // arr[j + 1].style.height = temp;
-          }
-        }, i * 1000);
+        arr[j].style.background = "blue";
+        arr[j + 1].style.background = "blue";
+
+        if (
+          parseInt(arr[j].style.height) >= parseInt(arr[j + 1].style.height)
+        ) {
+          await waitforme(1000);
+          let temp1 = arr[j].style.height;
+          let temp2 = arr[j + 1].style.height;
+          temp1 = temp1.substring(0, temp1.length - 2);
+          temp2 = temp2.substring(0, temp2.length - 2);
+          arr[j + 1].style.height = `${parseInt(temp1)}px`;
+          arr[j].style.height = `${parseInt(temp2)}px`;
+        }
+        arr[j].style.background = "cyan";
+        arr[j + 1].style.background = "cyan";
       }
+      arr[arr.length - 1 - i].style.background = "green";
     }
-    for (let k = 0; k < arr.length; k++) {
-      console.log(arr[k].style.height);
-    }
+    arr[0].style.background = "green";
   };
   const mergeSort = () => {};
 
@@ -65,7 +65,7 @@ const SortVisualiser = () => {
         return (
           <div
             className="array-bar"
-            style={{ backgroundColor: "black", height: `${value}px` }}
+            style={{ backgroundColor: "cnyan", height: `${value}px` }}
             key={idx}
           ></div>
         );
